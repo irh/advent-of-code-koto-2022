@@ -27,9 +27,7 @@ part_two = |input|
     .lines()
     .chunks(3)
     .fold 0, |result, group|
-      a, b, c = group
-        .each |backpack| backpack.chars().to_set()
-        .to_tuple() # TODO unpacking should work with iterables
+      a, b, c = group.each |backpack| backpack.chars().to_set()
       for item in a
         if (b.contains item) and (c.contains item)
           return result + item_score item
@@ -60,5 +58,5 @@ CrZsJsPPZsGzwwsLwLmpwMDw"
   @test part_one: ||
     assert_eq (part_one self.input), 157
 
-  @test part_one: ||
+  @test part_two: ||
     assert_eq (part_two self.input), 70
