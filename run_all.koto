@@ -1,4 +1,4 @@
-days = 4
+days = 5
 
 for day in 1..=days
   print "Day $day"
