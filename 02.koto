@@ -1,5 +1,7 @@
 # https://adventofcode.com/2022/day/2
 
+import app
+
 play_round = |them, us|
   choice_score = match us
     'X' then 1
@@ -31,16 +33,9 @@ part_two = |input|
   score
 
 @main = ||
-  t = os.start_timer()
-
-  input =
-    io.extend_path koto.script_dir, "input", "02"
-      >> io.read_to_string
-
-  print "Part one: ${part_one input}" # 11906
-  print "Part two: ${part_two input}" # 11186
-
-  print "{:.3}s", t.elapsed()
+  app.run 2, |input|
+    print "Part one: ${part_one input}" # 11906
+    print "Part two: ${part_two input}" # 11186
 
 @tests =
   @pre_test: ||

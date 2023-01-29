@@ -1,6 +1,6 @@
 # https://adventofcode.com/2022/day/3
 
-import set
+import app, set
 
 item_score = |item|
   match item.bytes().next()
@@ -32,18 +32,10 @@ part_two = |input|
         if (b.contains item) and (c.contains item)
           return result + item_score item
 
-
 @main = ||
-  t = os.start_timer()
-
-  input =
-    io.extend_path koto.script_dir, "input", "03"
-      >> io.read_to_string
-
-  print "Part one: ${part_one input}" # 7967
-  print "Part two: ${part_two input}" # 2716
-
-  print "{:.3}s", t.elapsed()
+  app.run 3, |input|
+    print "Part one: ${part_one input}" # 7967
+    print "Part two: ${part_two input}" # 2716
 
 @tests =
   @pre_test: ||

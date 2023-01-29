@@ -1,5 +1,7 @@
 # https://adventofcode.com/2022/day/5
 
+import app
+
 prepare_stacks = |input|
   stacks = []
   lines = input.lines()
@@ -45,16 +47,9 @@ part_two = |input|
   read_result stacks
 
 @main = ||
-  t = os.start_timer()
-
-  input =
-    io.extend_path koto.script_dir, 'input', '05'
-      >> io.read_to_string
-
-  print 'Part one: ${part_one input}' # SHQWSRBDL
-  print 'Part two: ${part_two input}' # CDTQZHBRS
-
-  print '{:.3}s', t.elapsed()
+  app.run 5, |input|
+    print 'Part one: ${part_one input}' # SHQWSRBDL
+    print 'Part two: ${part_two input}' # CDTQZHBRS
 
 @tests =
   @pre_test: ||

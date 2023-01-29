@@ -1,5 +1,7 @@
 # https://adventofcode.com/2022/day/4
 
+import app
+
 parse_range = |r|
   min, max = r.split '-'
   min.to_number()..=max.to_number()
@@ -32,16 +34,9 @@ part_two = |input|
     .count()
 
 @main = ||
-  t = os.start_timer()
-
-  input =
-    io.extend_path koto.script_dir, "input", "04"
-      >> io.read_to_string
-
-  print "Part one: ${part_one input}" # 528
-  print "Part two: ${part_two input}" # 881
-
-  print "{:.3}s", t.elapsed()
+  app.run 4, |input|
+    print "Part one: ${part_one input}" # 528
+    print "Part two: ${part_two input}" # 881
 
 @tests =
   @pre_test: ||

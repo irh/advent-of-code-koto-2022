@@ -1,5 +1,7 @@
 # https://adventofcode.com/2022/day/1
 
+import app
+
 parse_input = |input|
   result = []
   calories = 0
@@ -13,17 +15,10 @@ parse_input = |input|
   result.sort()
 
 @main = ||
-  t = os.start_timer()
-
-  input =
-    io.extend_path koto.script_dir, "input", "01"
-      >> io.read_to_string
-      >> parse_input
-
-  print "Part one: ${input.last()}" # 66306
-  print "Part two: ${input.reversed().take(3).sum()}" # 195292
-
-  print "{:.3}s", t.elapsed()
+  app.run 1, |input|
+    input = parse_input input
+    print "Part one: ${input.last()}" # 66306
+    print "Part two: ${input.reversed().take(3).sum()}" # 195292
 
 @tests =
   @pre_test: ||
