@@ -1,24 +1,28 @@
 set_meta =
-    @type: 'Set'
-    @iterator: || self.data.keys()
+  @type: 'Set'
+  @iterator: || self.data.keys()
 
-    @meta contains: |value|
-      self.data.contains_key value
+  @meta contains: |value|
+    self.data.contains_key value
 
-    @meta insert: |value|
+  @meta extend: |values|
+    for value in values
       self.data.insert value
-      self
+    self
 
-    @meta is_empty: || self.size() == 0
+  @meta insert: |value|
+    self.data.insert value
+    self
 
-    @meta size: || self.data.size()
+  @meta is_empty: || self.size() == 0
+
+  @meta size: || self.data.size()
 
 export make_set = |values|
   data = {}
 
   if values != null
-    for value in values
-      data.insert value
+    data.extend values
 
   {data}.with_meta_map set_meta
 
