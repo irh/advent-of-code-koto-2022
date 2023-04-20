@@ -1,0 +1,93 @@
+# https://adventofcode.com/2022/day/10
+
+import app
+
+cpu_with_program = |program|
+  cycle = 0
+  register = 1
+
+  instructions = program.lines()
+
+  op = 'noop'
+  op_counter = 1
+  op_n = 0
+
+  while op_counter > 0
+    op_counter -= 1
+
+    if op_counter == 0
+      match op
+        'addx' then
+          register += op_n
+
+      if (instruction = instructions.next())
+        op, n = instruction.split ' '
+        match op
+          'addx' then
+            op_n = n.to_number()
+            op_counter = 2
+          'noop' then
+            op_counter = 1
+
+    yield register
+
+part_one = |input|
+  (cpu_with_program input)
+    .enumerate()
+    .each |(i, output)|
+      i += 1
+      match i
+        20 or 60 or 100 or 140 or 180 or 220 then
+          i * output
+        else
+          0
+    .sum()
+
+part_two = |input|
+  pixels = (cpu_with_program input)
+    .to_tuple() # TODO can iterator.chunks work without peeking? would be nice to avoid .to_tuple
+    .take 240 # TODO Why do we get 241 steps of output? This shouldn't be necessary
+    .chunks 40
+    .each |row|
+      row
+        .enumerate()
+        .each |(i, output)|
+          if i >= (output - 1) and i <= (output + 1)
+            '#'
+          else
+            '.'
+        .to_string()
+    .intersperse '\n'
+    .to_string()
+
+@main = ||
+  app.run 10, |input|
+    print 'Part one: ${part_one input}' # 11780
+    print 'Part two:\n${part_two input}' # PZULBAUA
+
+@tests =
+  program:
+    io.extend_path koto.script_dir, 'input', '10-test'
+      >> io.read_to_string
+
+  @test part_one_a: ||
+    cpu = cpu_with_program '\
+noop
+addx 3
+addx -5
+'
+    assert_eq cpu.skip(5).next(), -1
+
+  @test part_one_b: ||
+    assert_eq (part_one self.program), 13140
+
+  @test part_two: ||
+    expected_output = '\
+##..##..##..##..##..##..##..##..##..##..
+###...###...###...###...###...###...###.
+####....####....####....####....####....
+#####.....#####.....#####.....#####.....
+######......######......######......####
+#######.......#######.......#######.....'
+
+    assert_eq (part_two self.program), expected_output
