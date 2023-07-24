@@ -2,37 +2,38 @@
 
 import app
 
-cpu_with_program = |program|
+program_runner = |program|
+  instructions = program.lines().peekable()
+
   cycle = 0
   register = 1
-
-  instructions = program.lines()
-
   op = 'noop'
-  op_counter = 1
+  op_counter = 0
   op_n = 0
 
-  while op_counter > 0
+  while instructions.peek() or op_counter > 0
     op_counter -= 1
 
-    if op_counter == 0
+    if op_counter <= 0
       match op
         'addx' then
           register += op_n
 
-      if (instruction = instructions.next())
+      if instructions.peek()
+        instruction = instructions.next()
         op, n = instruction.split ' '
+
         match op
           'addx' then
             op_n = n.to_number()
             op_counter = 2
           'noop' then
-            op_counter = 1
+            op_counter = 0
 
     yield register
 
 part_one = |input|
-  (cpu_with_program input)
+  (program_runner input)
     .enumerate()
     .each |(i, output)|
       i += 1
@@ -44,9 +45,7 @@ part_one = |input|
     .sum()
 
 part_two = |input|
-  pixels = (cpu_with_program input)
-    .to_tuple() # TODO can iterator.chunks work without peeking? would be nice to avoid .to_tuple
-    .take 240 # TODO Why do we get 241 steps of output? This shouldn't be necessary
+  (program_runner input)
     .chunks 40
     .each |row|
       row
@@ -71,7 +70,7 @@ part_two = |input|
       >> io.read_to_string
 
   @test part_one_a: ||
-    cpu = cpu_with_program '\
+    cpu = program_runner '\
 noop
 addx 3
 addx -5
